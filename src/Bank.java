@@ -1,3 +1,4 @@
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class Bank {
@@ -52,11 +53,13 @@ public class Bank {
                     break;
                 case 2:
                     System.out.println("Deposit Money selected.");
-                    //accountBalance = deposit();
+                    int accountNumberIndex = matchAccountNumber(accountNumber,scan);
+                    accountBalance = deposit(accountNumberIndex,accountBalance,scan);
                     break;
                 case 3:
                     System.out.println("Withdraw Money selected.");
-                    // TODO: Add logic for withdrawal
+                    accountNumberIndex = matchAccountNumber(accountNumber,scan);
+                    accountBalance = withdraw(accountNumberIndex,accountBalance,scan);
                     break;
                 case 4:
                     System.out.println("Check Balance selected.");
@@ -109,6 +112,13 @@ public class Bank {
     public static int[] getAccountNumber(int[] accountNumbersArr, int createdCount,Scanner scan) {
         while (true) {
             System.out.print("Enter New Account Number: ");
+
+            while (!scan.hasNextInt()) {
+                System.out.println("Invalid input! Please enter a correct number.");
+                System.out.print("Enter New Account Number: ");
+                scan.next(); // discard invalid input
+            }
+
             int newAccountNumber = scan.nextInt();
             scan.nextLine();
             boolean exists = false;
@@ -147,10 +157,66 @@ public class Bank {
     }
 
     public static double[] initialDeposit(double[] accountBalanceArr,int createdCount,Scanner scan){
-        System.out.println("Enter account balance to deposit : ");
+        System.out.print("Enter account balance to deposit : ");
         accountBalanceArr[createdCount] = scan.nextDouble();
 
         return accountBalanceArr;
+    }
+
+    public static int matchAccountNumber(int[] accountNumbers, Scanner scan){
+        System.out.print("Enter account holder name : ");
+        String name = scan.next();
+
+        int currentAccountNumber =0;
+        while(true) {
+            System.out.print("Enter account number : ");
+            currentAccountNumber = scan.nextInt();
+            boolean valid = checkValidAccount(currentAccountNumber,accountNumbers);
+
+            if(valid){
+                break;
+            }else{
+                System.out.println("Wrong account number! Retry!!!");
+            }
+        }
+
+        int accountNumberIndex = 0;
+
+        for(int i=0; i<accountNumbers.length; i++){
+            if(currentAccountNumber == accountNumbers[i]){
+                accountNumberIndex = i;
+            }
+        }
+
+        return accountNumberIndex;
+    }
+
+    public static boolean checkValidAccount(int accountNumber, int[] accountNumbers){
+        boolean value = false;
+        for(int i=0; i<accountNumbers.length;i++){
+            if(accountNumbers[i] == accountNumber){
+                value = true;
+            }
+        }
+        return value;
+    }
+
+    public static double[] deposit(int index, double[] balanceArr, Scanner scan){
+        System.out.print("Enter amount to deposit : ");
+        double amount = scan.nextDouble();
+
+        balanceArr[index] += amount;
+        System.out.println("Deposit succesfully! New Balance is " +balanceArr[index]);
+        return balanceArr;
+    }
+
+    public static double[] withdraw(int index, double[] balanceArr, Scanner scan){
+        System.out.println("Enter amount to withdraw : ");
+        double amount = scan.nextDouble();
+
+        balanceArr[index] -= amount;
+        System.out.println("Withdraw succesfully! New Balance is " +balanceArr[index]);
+        return balanceArr;
     }
 
 }
