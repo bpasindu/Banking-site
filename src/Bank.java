@@ -63,7 +63,8 @@ public class Bank {
                     break;
                 case 4:
                     System.out.println("Check Balance selected.");
-                    // TODO: Add logic for balance checking
+                    accountNumberIndex = matchAccountNumber(accountNumber,scan);
+                    checkAccountBalance(accountNumberIndex,accountBalance);
                     break;
                 case 5:
                     System.out.println("Apply for Loan selected.");
@@ -217,6 +218,10 @@ public class Bank {
         balanceArr[index] -= amount;
         System.out.println("Withdraw succesfully! New Balance is " +balanceArr[index]);
         return balanceArr;
+    }
+
+    public static void checkAccountBalance(int index, double[] balanceArr){
+        System.out.println("Your account balance is " +balanceArr[index]);
     }
 
 }
