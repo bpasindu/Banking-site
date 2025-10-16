@@ -1,4 +1,3 @@
-import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class Bank {
@@ -11,6 +10,8 @@ public class Bank {
         String[] holderName = new String[50];
         double[] accountBalance = new double[50];
         String[] accountType =  new String[50];
+        String[] loanDescription = new String[50];
+        double[] loanAmount = new double[50];
 
         int accountCreatedCount = 0;
 
@@ -68,15 +69,24 @@ public class Bank {
                     break;
                 case 5:
                     System.out.println("Apply for Loan selected.");
-                    // TODO: Add logic for loan application
+                    accountNumberIndex = matchAccountNumber(accountNumber,scan);
+                    addLoanDescription(accountNumberIndex,loanDescription,scan);
+                    addLoanAmount(accountNumberIndex,loanAmount,scan);
                     break;
                 case 6:
                     System.out.println("View Loan Details selected.");
-                    // TODO: Add logic for viewing loan details
+                    accountNumberIndex = matchAccountNumber(accountNumber,scan);
+                    showLoanAmount(accountNumberIndex,loanAmount);
+                    showLoanDescription(accountNumberIndex,loanDescription);
                     break;
                 case 7:
                     System.out.println("Transfer Funds selected.");
-                    // TODO: Add logic for transfer funds
+                    System.out.println("Add sender details below : ");
+                    accountNumberIndex = matchAccountNumber(accountNumber,scan);
+                    System.out.println("Add reciever details below : ");
+                    int accountNumberReciverIndex = matchAccountNumber(accountNumber,scan);
+                    accountBalance = withdraw(accountNumberIndex,accountBalance,scan);
+                    accountBalance = deposit(accountNumberReciverIndex,accountBalance,scan);
                     break;
                 case 8:
                     System.out.println("Exiting the application...");
@@ -224,4 +234,23 @@ public class Bank {
         System.out.println("Your account balance is " +balanceArr[index]);
     }
 
+    public static String[] addLoanDescription(int index, String[] loanDescription, Scanner scan){
+        System.out.print("Enter loan description : ");
+        loanDescription[index] = scan.next();
+        return loanDescription;
+    }
+
+    public static double[] addLoanAmount(int index, double[] loanAmount, Scanner scan){
+        System.out.print("Enter loan amount : ");
+        loanAmount[index] = scan.nextDouble();
+        return loanAmount;
+    }
+
+    public static void showLoanAmount(int index,double[] loanAmount){
+        System.out.print("Your loan amount is " +loanAmount[index]);
+    }
+
+    public static void showLoanDescription(int index, String[] loanDescription){
+        System.out.println("Your loan description is : " +loanDescription[index]);
+    }
 }
