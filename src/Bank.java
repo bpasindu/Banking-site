@@ -1,10 +1,17 @@
 import java.util.Scanner;
 
 public class Bank {
+
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
 
         int choice;
+        int[] accountNumber = new int[50];
+        String[] holderName = new String[50];
+        double[] accountBalance = new double[50];
+        String[] accountType =  new String[50];
+
+        int accountCreatedCount = 0;
 
         do {
             //clearConsole();
@@ -37,37 +44,41 @@ public class Bank {
             switch (choice) {
                 case 1:
                     System.out.println("Create Account selected.");
-                    //createAccount();
+                    accountNumber = getAccountNumber(accountNumber,accountCreatedCount,scan);
+                    holderName = getHolderName(holderName,accountCreatedCount,scan);
+                    accountType = getAccountType(accountType,accountCreatedCount,scan);
+                    accountBalance = initialDeposit(accountBalance,accountCreatedCount,scan);
+                    accountCreatedCount++;
                     break;
                 case 2:
-                    System.out.println("💰 Deposit Money selected.");
-                    // TODO: Add logic for deposit
+                    System.out.println("Deposit Money selected.");
+                    //accountBalance = deposit();
                     break;
                 case 3:
-                    System.out.println("💸 Withdraw Money selected.");
+                    System.out.println("Withdraw Money selected.");
                     // TODO: Add logic for withdrawal
                     break;
                 case 4:
-                    System.out.println("📊 Check Balance selected.");
+                    System.out.println("Check Balance selected.");
                     // TODO: Add logic for balance checking
                     break;
                 case 5:
-                    System.out.println("🏦 Apply for Loan selected.");
+                    System.out.println("Apply for Loan selected.");
                     // TODO: Add logic for loan application
                     break;
                 case 6:
-                    System.out.println("📋 View Loan Details selected.");
+                    System.out.println("View Loan Details selected.");
                     // TODO: Add logic for viewing loan details
                     break;
                 case 7:
-                    System.out.println("🔁 Transfer Funds selected.");
+                    System.out.println("Transfer Funds selected.");
                     // TODO: Add logic for transfer funds
                     break;
                 case 8:
-                    System.out.println("👋 Exiting the application...");
+                    System.out.println("Exiting the application...");
                     break;
                 default:
-                    System.out.println("⚠️ Invalid choice! Please select a number between 1 and 8.");
+                    System.out.println("Invalid choice! Please select a number between 1 and 8.");
                     break;
             }
 
@@ -95,6 +106,51 @@ public class Bank {
         }
     }
 
+    public static int[] getAccountNumber(int[] accountNumbersArr, int createdCount,Scanner scan) {
+        while (true) {
+            System.out.print("Enter New Account Number: ");
+            int newAccountNumber = scan.nextInt();
+            scan.nextLine();
+            boolean exists = false;
 
+            // Check if number already exists
+            for (int i = 0; i < createdCount; i++) {
+                if (newAccountNumber == accountNumbersArr[i]) {
+                    exists = true;
+                    break;
+                }
+            }
+
+            if (exists) {
+                System.out.println("Number already exists! Please enter a new number.\n");
+            } else {
+                accountNumbersArr[createdCount] = newAccountNumber;
+                break;
+            }
+        }
+
+        return accountNumbersArr;
+    }
+
+    public static String[] getHolderName(String[] holderNameArr, int createdCount,Scanner scan) {
+        System.out.print("Enter account holder name : ");
+        holderNameArr[createdCount] = scan.next();
+        return holderNameArr;
+    }
+
+    public static String[] getAccountType(String[] accountTypeArr, int createdCount, Scanner scan){
+        System.out.println(" 1.Saving Account \n 2.Current Account \n 3.Wanitha wasana Account");
+        System.out.print("Enter Account type : ");
+        accountTypeArr[createdCount] = scan.next();
+
+        return accountTypeArr;
+    }
+
+    public static double[] initialDeposit(double[] accountBalanceArr,int createdCount,Scanner scan){
+        System.out.println("Enter account balance to deposit : ");
+        accountBalanceArr[createdCount] = scan.nextDouble();
+
+        return accountBalanceArr;
+    }
 
 }
