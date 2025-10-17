@@ -157,6 +157,12 @@ public class Bank {
 
     public static double[] initialDeposit(double[] accountBalanceArr,int createdCount,Scanner scan){
         System.out.print("Enter account balance to deposit : ");
+
+        while (!scan.hasNextDouble()) {
+            System.out.print("Invalid input! Please enter a valid amount : ");
+            scan.next();
+        }
+
         accountBalanceArr[createdCount] = scan.nextDouble();
 
         return accountBalanceArr;
@@ -204,6 +210,11 @@ public class Bank {
     public static double[] deposit(int index, double[] balanceArr, Scanner scan){
 
         System.out.print("Enter amount to deposit : ");
+
+        while (!scan.hasNextDouble()) {
+            System.out.print("Invalid input! Please enter a valid amount : ");
+            scan.next();
+        }
         double amount = scan.nextDouble();
 
         balanceArr[index] += amount;
@@ -215,6 +226,10 @@ public class Bank {
         double amount=0;
         do {
             System.out.print("Enter amount to withdraw : ");
+            while (!scan.hasNextDouble()) {
+                System.out.println("Invalid input! Please enter a valid amount");
+                scan.next();
+            }
             amount = scan.nextDouble();
 
             if(amount<balanceArr[index]){
@@ -240,6 +255,10 @@ public class Bank {
 
     public static double[] addLoanAmount(int index, double[] loanAmount, Scanner scan){
         System.out.print("Enter loan amount : ");
+        while (!scan.hasNextDouble()) {
+            System.out.println("Invalid input! Please enter a valid amount");
+            scan.next();
+        }
         loanAmount[index] = scan.nextDouble();
         return loanAmount;
     }
@@ -273,9 +292,10 @@ public class Bank {
             recieverNumber = scan.nextInt();
             boolean value = false;
             if(recieverNumber == senderNumber){
-                break;
-            }else{
                 value = true;
+                System.out.println("Reciever and sender acount number con not be same");
+            }else{
+                break;
             }
         }while(true);
         while(true) {
@@ -309,6 +329,10 @@ public class Bank {
         double amount =0;
         do{
             System.out.print("Enter amount to transfer : ");
+            while (!scan.hasNextDouble()) {
+                System.out.print("Invalid input! Please enter a valid amount : ");
+                scan.next();
+            }
             amount = scan.nextDouble();
 
             if(amount<accountBalanceArr[senderAccountNumberIndex]){
