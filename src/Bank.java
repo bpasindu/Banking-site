@@ -39,9 +39,7 @@ public class Bank {
             }
 
             choice = scan.nextInt();
-            scan.nextLine();  //clear buffer
-
-            clearConsole();
+            //clearConsole();
 
             switch (choice) {
                 case 1:
@@ -50,6 +48,7 @@ public class Bank {
                     holderName = getHolderName(holderName,accountCreatedCount,scan);
                     accountType = getAccountType(accountType,accountCreatedCount,scan);
                     accountBalance = initialDeposit(accountBalance,accountCreatedCount,scan);
+                    System.out.println("Account created successfully!!!");
                     accountCreatedCount++;
                     break;
                 case 2:
@@ -70,8 +69,8 @@ public class Bank {
                 case 5:
                     System.out.println("Apply for Loan selected.");
                     accountNumberIndex = matchAccountNumber(accountNumber,scan);
-                    addLoanDescription(accountNumberIndex,loanDescription,scan);
-                    addLoanAmount(accountNumberIndex,loanAmount,scan);
+                    loanDescription = addLoanDescription(accountNumberIndex,loanDescription,scan);
+                    loanAmount = addLoanAmount(accountNumberIndex,loanAmount,scan);
                     break;
                 case 6:
                     System.out.println("View Loan Details selected.");
@@ -81,12 +80,7 @@ public class Bank {
                     break;
                 case 7:
                     System.out.println("Transfer Funds selected.");
-                    System.out.println("Add sender details below : ");
-                    accountNumberIndex = matchAccountNumber(accountNumber,scan);
-                    System.out.println("Add reciever details below : ");
-                    int accountNumberReciverIndex = matchAccountNumber(accountNumber,scan);
-                    accountBalance = withdraw(accountNumberIndex,accountBalance,scan);
-                    accountBalance = deposit(accountNumberReciverIndex,accountBalance,scan);
+                    accountBalance = transferFund(accountNumber,accountBalance,scan);
                     break;
                 case 8:
                     System.out.println("Exiting the application...");
@@ -94,12 +88,6 @@ public class Bank {
                 default:
                     System.out.println("Invalid choice! Please select a number between 1 and 8.");
                     break;
-            }
-
-
-            if (choice != 8) {
-                System.out.println("\nPress Enter to return to the main menu..");
-                scan.nextLine(); // wait for user
             }
 
         } while (choice != 8);
@@ -207,12 +195,14 @@ public class Bank {
         for(int i=0; i<accountNumbers.length;i++){
             if(accountNumbers[i] == accountNumber){
                 value = true;
+                break;
             }
         }
         return value;
     }
 
     public static double[] deposit(int index, double[] balanceArr, Scanner scan){
+
         System.out.print("Enter amount to deposit : ");
         double amount = scan.nextDouble();
 
@@ -222,9 +212,17 @@ public class Bank {
     }
 
     public static double[] withdraw(int index, double[] balanceArr, Scanner scan){
-        System.out.println("Enter amount to withdraw : ");
-        double amount = scan.nextDouble();
+        double amount=0;
+        do {
+            System.out.print("Enter amount to withdraw : ");
+            amount = scan.nextDouble();
 
+            if(amount<balanceArr[index]){
+                break;
+            }else{
+                System.out.println("amount is insufficient! Retry with new amount.");
+            }
+        }while(true);
         balanceArr[index] -= amount;
         System.out.println("Withdraw succesfully! New Balance is " +balanceArr[index]);
         return balanceArr;
@@ -252,5 +250,76 @@ public class Bank {
 
     public static void showLoanDescription(int index, String[] loanDescription){
         System.out.println("Your loan description is : " +loanDescription[index]);
+    }
+
+    public static double[] transferFund(int[] accountNumberArr, double[] accountBalanceArr,Scanner scan){
+        System.out.print("Enter sender name : ");
+        String name = scan.next();
+        int senderNumber =0;
+        while(true) {
+            System.out.print("Enter sender account : ");
+            senderNumber= scan.nextInt();
+            if(checkValidAccount(senderNumber,accountNumberArr)){
+                break;
+            }else{
+                System.out.println("Account number is incorrect. Retry!");
+            }
+        }
+        System.out.print("Enter reciever name : ");
+        String recieverName = scan.next();
+        int recieverNumber=0;
+        do {
+            System.out.print("Enter reciever account : ");
+            recieverNumber = scan.nextInt();
+            boolean value = false;
+            if(recieverNumber == senderNumber){
+                break;
+            }else{
+                value = true;
+            }
+        }while(true);
+        while(true) {
+            if(checkValidAccount(recieverNumber,accountNumberArr)){
+                break;
+            }else{
+                System.out.println("Account number is incorrect. Retry!");
+                System.out.print("Enter reciever account number : ");
+                recieverNumber = scan.nextInt();
+            }
+        }
+
+
+
+        int senderAccountNumberIndex = 0;
+
+        for(int i=0; i<accountNumberArr.length; i++){
+            if(senderNumber == accountNumberArr[i]){
+                senderAccountNumberIndex = i;
+            }
+        }
+
+        int recieverAccountNumberIndex = 0;
+
+        for(int i=0; i<accountNumberArr.length; i++){
+            if(recieverNumber == accountNumberArr[i]){
+                recieverAccountNumberIndex = i;
+            }
+        }
+
+        double amount =0;
+        do{
+            System.out.print("Enter amount to transfer : ");
+            amount = scan.nextDouble();
+
+            if(amount<accountBalanceArr[senderAccountNumberIndex]){
+                break;
+            }else{
+                System.out.println("Amount is insufficient! Retry with new value");
+            }
+        }while(true);
+        accountBalanceArr[senderAccountNumberIndex] -= amount;
+        accountBalanceArr[recieverAccountNumberIndex] += amount;
+
+        return accountBalanceArr;
     }
 }
