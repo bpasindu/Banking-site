@@ -2,8 +2,10 @@ import java.util.Scanner;
 
 public class Bank {
 
+    static Scanner scan = new Scanner(System.in);
+    
     public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
+
 
         int choice;
         int[] accountNumber = new int[50];
@@ -44,43 +46,43 @@ public class Bank {
             switch (choice) {
                 case 1:
                     System.out.println("Create Account selected.");
-                    accountNumber = getAccountNumber(accountNumber,accountCreatedCount,scan);
-                    holderName = getHolderName(holderName,accountCreatedCount,scan);
-                    accountType = getAccountType(accountType,accountCreatedCount,scan);
-                    accountBalance = initialDeposit(accountBalance,accountCreatedCount,scan);
+                    accountNumber = getAccountNumber(accountNumber,accountCreatedCount);
+                    holderName = getHolderName(holderName,accountCreatedCount);
+                    accountType = getAccountType(accountType,accountCreatedCount);
+                    accountBalance = initialDeposit(accountBalance,accountCreatedCount);
                     System.out.println("Account created successfully!!!");
                     accountCreatedCount++;
                     break;
                 case 2:
                     System.out.println("Deposit Money selected.");
-                    int accountNumberIndex = matchAccountNumber(accountNumber,scan);
-                    accountBalance = deposit(accountNumberIndex,accountBalance,scan);
+                    int accountNumberIndex = matchAccountNumber(accountNumber);
+                    accountBalance = deposit(accountNumberIndex,accountBalance);
                     break;
                 case 3:
                     System.out.println("Withdraw Money selected.");
-                    accountNumberIndex = matchAccountNumber(accountNumber,scan);
-                    accountBalance = withdraw(accountNumberIndex,accountBalance,scan);
+                    accountNumberIndex = matchAccountNumber(accountNumber);
+                    accountBalance = withdraw(accountNumberIndex,accountBalance);
                     break;
                 case 4:
                     System.out.println("Check Balance selected.");
-                    accountNumberIndex = matchAccountNumber(accountNumber,scan);
+                    accountNumberIndex = matchAccountNumber(accountNumber);
                     checkAccountBalance(accountNumberIndex,accountBalance);
                     break;
                 case 5:
                     System.out.println("Apply for Loan selected.");
-                    accountNumberIndex = matchAccountNumber(accountNumber,scan);
-                    loanDescription = addLoanDescription(accountNumberIndex,loanDescription,scan);
-                    loanAmount = addLoanAmount(accountNumberIndex,loanAmount,scan);
+                    accountNumberIndex = matchAccountNumber(accountNumber);
+                    loanDescription = addLoanDescription(accountNumberIndex,loanDescription);
+                    loanAmount = addLoanAmount(accountNumberIndex,loanAmount);
                     break;
                 case 6:
                     System.out.println("View Loan Details selected.");
-                    accountNumberIndex = matchAccountNumber(accountNumber,scan);
+                    accountNumberIndex = matchAccountNumber(accountNumber);
                     showLoanAmount(accountNumberIndex,loanAmount);
                     showLoanDescription(accountNumberIndex,loanDescription);
                     break;
                 case 7:
                     System.out.println("Transfer Funds selected.");
-                    accountBalance = transferFund(accountNumber,accountBalance,scan);
+                    accountBalance = transferFund(accountNumber,accountBalance);
                     break;
                 case 8:
                     System.out.println("Exiting the application...");
@@ -108,7 +110,7 @@ public class Bank {
         }
     }
 
-    public static int[] getAccountNumber(int[] accountNumbersArr, int createdCount,Scanner scan) {
+    public static int[] getAccountNumber(int[] accountNumbersArr, int createdCount) {
         while (true) {
             System.out.print("Enter New Account Number: ");
 
@@ -141,21 +143,20 @@ public class Bank {
         return accountNumbersArr;
     }
 
-    public static String[] getHolderName(String[] holderNameArr, int createdCount,Scanner scan) {
+    public static String[] getHolderName(String[] holderNameArr, int createdCount) {
         System.out.print("Enter account holder name : ");
         holderNameArr[createdCount] = scan.next();
         return holderNameArr;
     }
 
-    public static String[] getAccountType(String[] accountTypeArr, int createdCount, Scanner scan){
+    public static String[] getAccountType(String[] accountTypeArr, int createdCount){
         System.out.println(" 1.Saving Account \n 2.Current Account \n 3.Wanitha wasana Account");
         System.out.print("Enter Account type : ");
         accountTypeArr[createdCount] = scan.next();
-
         return accountTypeArr;
     }
 
-    public static double[] initialDeposit(double[] accountBalanceArr,int createdCount,Scanner scan){
+    public static double[] initialDeposit(double[] accountBalanceArr,int createdCount){
         System.out.print("Enter account balance to deposit : ");
 
         while (!scan.hasNextDouble()) {
@@ -168,7 +169,7 @@ public class Bank {
         return accountBalanceArr;
     }
 
-    public static int matchAccountNumber(int[] accountNumbers, Scanner scan){
+    public static int matchAccountNumber(int[] accountNumbers){
         System.out.print("Enter account holder name : ");
         String name = scan.next();
 
@@ -207,7 +208,7 @@ public class Bank {
         return value;
     }
 
-    public static double[] deposit(int index, double[] balanceArr, Scanner scan){
+    public static double[] deposit(int index, double[] balanceArr){
 
         System.out.print("Enter amount to deposit : ");
 
@@ -222,7 +223,7 @@ public class Bank {
         return balanceArr;
     }
 
-    public static double[] withdraw(int index, double[] balanceArr, Scanner scan){
+    public static double[] withdraw(int index, double[] balanceArr){
         double amount=0;
         do {
             System.out.print("Enter amount to withdraw : ");
@@ -247,13 +248,13 @@ public class Bank {
         System.out.println("Your account balance is " +balanceArr[index]);
     }
 
-    public static String[] addLoanDescription(int index, String[] loanDescription, Scanner scan){
+    public static String[] addLoanDescription(int index, String[] loanDescription){
         System.out.print("Enter loan description : ");
         loanDescription[index] = scan.next();
         return loanDescription;
     }
 
-    public static double[] addLoanAmount(int index, double[] loanAmount, Scanner scan){
+    public static double[] addLoanAmount(int index, double[] loanAmount){
         System.out.print("Enter loan amount : ");
         while (!scan.hasNextDouble()) {
             System.out.println("Invalid input! Please enter a valid amount");
@@ -271,7 +272,7 @@ public class Bank {
         System.out.println("Your loan description is : " +loanDescription[index]);
     }
 
-    public static double[] transferFund(int[] accountNumberArr, double[] accountBalanceArr,Scanner scan){
+    public static double[] transferFund(int[] accountNumberArr, double[] accountBalanceArr){
         System.out.print("Enter sender name : ");
         String name = scan.next();
         int senderNumber =0;
